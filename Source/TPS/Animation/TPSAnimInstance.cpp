@@ -8,6 +8,11 @@
 
 UTPSAnimInstance::UTPSAnimInstance()
 {
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> FireMontageRef(TEXT("/Script/Engine.AnimMontage'/Game/Animation/AM_Fire.AM_Fire'"));
+	if (FireMontageRef.Succeeded())
+	{
+		FireMontage = FireMontageRef.Object;
+	}
 }
 
 void UTPSAnimInstance::NativeInitializeAnimation()
@@ -42,4 +47,9 @@ void UTPSAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bShouldMove = (Velocity.Size2D() > 3.0f && MovementComponent->GetCurrentAcceleration() != FVector::ZeroVector);
 
 	bIsFalling = MovementComponent->IsFalling();
+}
+
+void UTPSAnimInstance::PlayFireMontage()
+{
+	Montage_Play(FireMontage);
 }
