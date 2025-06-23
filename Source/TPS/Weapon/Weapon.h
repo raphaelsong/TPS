@@ -35,6 +35,7 @@ public:
 	virtual void StopFire();
 	virtual void Reloading();
 	virtual void FinishReloading();
+	virtual void PlayHitEffect(FTransform HitTransform);
 
 protected:
 	void FireWithProjectile(TWeakObjectPtr<class ATPSCharacter> OwnerCharacter);
@@ -53,6 +54,9 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class USkeletalMeshComponent> MeshComponent;
+
+	UPROPERTY(EditAnywhere, Category = HitEffect)
+	TObjectPtr<class UParticleSystem> HitEffect;
 
 	UPROPERTY(EditAnywhere, Category = Properties)
 	int32 AmmoMaxCount = 30;
