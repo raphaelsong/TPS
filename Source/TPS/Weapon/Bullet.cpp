@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "Particles/ParticleSystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/DamageEvents.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -74,6 +75,14 @@ void ABullet::PlayHitEffect(FTransform HitTransform)
 void ABullet::OnBulletHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Cyan, FString::Printf(TEXT("Bullet Hit")));
+
+	ACharacter* HitCharacter = Cast<ACharacter>(OtherActor);
+	if (HitCharacter)
+	{
+		ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+		FDamageEvent DamageEvent;
+		HitCharacter->TakeDamage(AttackDamage, DamageEvent, OwnerCharacter->GetController(), OwnerCharacter);
+	}
 
 	FTransform BulletTransform;
 	BulletTransform.SetLocation(Hit.ImpactPoint);
